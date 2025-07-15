@@ -8,18 +8,21 @@
 </head>
 <body>
     <div id="game-container">
-        <img id="background" src="" alt="Game Background">
-        <img id="sarah" src="sarah.png" alt="Sarah">
-        <img id="changbin" src="changbin.png" alt="Changbin">
+        <div id="game-world">
+            <img id="sarah" src="sarah.png" alt="Sarah">
+            <img id="changbin" src="changbin.png" alt="Changbin" class="hidden">
+            </div>
 
-        <div id="dialogue-box">
+        <div id="dialogue-box" class="hidden">
             <p id="dialogue-text"></p>
             <div id="choices-container">
                 </div>
-            <button id="next-button">Next</button>
+            <button id="next-button" class="hidden">Next</button>
         </div>
 
         <div id="controls">
+            <button id="left-arrow">←</button>
+            <button id="right-arrow">→</button>
             </div>
     </div>
 
