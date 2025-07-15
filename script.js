@@ -3,59 +3,73 @@ let currentScene = 0;
 
 const scenes = [
   {
-    text: "You're Sarah, a student at Seoul Arts High. Changbin walks into the library. What do you do?",
+    bg: "bg-library.jpg",
+    sarahVisible: true,
+    changbinVisible: true,
+    text: "Sarah spots Changbin reading alone in the library.",
     choices: [
-      { text: "Smile at him shyly", affection: 1 },
-      { text: "Ignore him", affection: 0 },
-      { text: "Trip and fall near him on purpose", affection: 2 }
+      { text: "Approach him with a smile", affection: 2 },
+      { text: "Sit near him silently", affection: 1 },
+      { text: "Leave him alone", affection: -1 }
     ]
   },
   {
-    text: "Changbin smiles back and sits near you. He asks what you're reading.",
+    bg: "bg-classroom.jpg",
+    text: "Later, you both end up in the same music class.",
     choices: [
-      { text: "Something poetic, like love poems", affection: 2 },
-      { text: "Just textbooks", affection: 1 },
-      { text: "None of your business", affection: -1 }
+      { text: "Compliment his skills", affection: 2 },
+      { text: "Stay quiet but watch", affection: 1 },
+      { text: "Yawn loudly", affection: -2 }
     ]
   },
   {
-    text: "He invites you to hang out after school.",
+    bg: "bg-park.jpg",
+    text: "After school, you meet him at the park.",
     choices: [
-      { text: "Say yes enthusiastically", affection: 2 },
-      { text: "Say yes calmly", affection: 1 },
-      { text: "Make up an excuse", affection: -2 }
+      { text: "Offer to walk home together", affection: 2 },
+      { text: "Talk about music", affection: 1 },
+      { text: "Say you’re busy", affection: -1 }
     ]
   },
   {
-    text: "Final Result",
+    bg: "bg-park.jpg",
+    text: "Final scene...",
     choices: []
   }
 ];
 
 function showScene() {
   const scene = scenes[currentScene];
-  document.getElementById("scene-text").innerText = scene.text;
-  const choicesDiv = document.getElementById("choices");
-  choicesDiv.innerHTML = '';
+  document.getElementById("background").src = scene.bg;
+  document.getElementById("sarah").style.display = scene.sarahVisible !== false ? 'block' : 'none';
+  document.getElementById("changbin").style.display = scene.changbinVisible !== false ? 'block' : 'none';
+  
+  const dialogue = document.getElementById("dialogue-text");
+  dialogue.textContent = scene.text;
+
+  const choiceBox = document.getElementById("choice-box");
+  choiceBox.innerHTML = '';
 
   if (currentScene === scenes.length - 1) {
-    let ending = affection >= 5 ? "❤️ Changbin likes you back!" :
-                 affection >= 2 ? "🙂 You're friends now." :
-                                  "💔 He’s not interested.";
-    choicesDiv.innerHTML = `<p>${ending}</p>`;
+    let result = affection >= 5
+      ? "❤️ Changbin blushes. 'I think I like you too, Sarah.'"
+      : affection >= 2
+      ? "🙂 Changbin smiles. 'Let’s be good friends.'"
+      : "💔 He nods. 'See you around.'";
+    dialogue.textContent = result;
     return;
   }
 
-  scene.choices.forEach((choice, index) => {
+  scene.choices.forEach(choice => {
     const btn = document.createElement("button");
-    btn.innerText = choice.text;
+    btn.textContent = choice.text;
     btn.onclick = () => {
       affection += choice.affection;
       currentScene++;
       showScene();
     };
-    choicesDiv.appendChild(btn);
+    choiceBox.appendChild(btn);
   });
 }
 
-showScene();
+window.onload = showScene;
